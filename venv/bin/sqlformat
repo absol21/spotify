@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/home/user/Рабочий стол/spotify/venv/bin/python3" "$0" "$@"
+'''exec' "/home/user/Рабочий стол/django_project/hackathon/venv/bin/python3" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re
