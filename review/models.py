@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from post import Post
+from post.models import Post
 
 
 User = get_user_model()
@@ -39,7 +39,7 @@ class Like(models.Model):
 
 class Playlist(models.Model):
     title  = models.CharField(max_length=200,unique=True)
-    post = models.ForeignKey(Post,on_delete=models.SET_NULL,related_name='playlists')
+    post = models.ForeignKey(Post,on_delete=models.DO_NOTHING,related_name='playlists')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='playlists')
 
     def __str__(self) -> str:

@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_yasg',
     'post',
-    # 'review',
+    'review',
     'account',
 ]
 
