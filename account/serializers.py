@@ -112,3 +112,8 @@ class ForgotPasswordCompleteSerializer(serializers.Serializer):
         user.set_password(password)
         user.activation_code = ''
         user.save()
+
+    # def create(self, validated_data):
+    #     user = User.objects.create_user(**validated_data)
+    #     send_activation_code_celery.delay(user.email, user.activation_code)
+    #     return user
