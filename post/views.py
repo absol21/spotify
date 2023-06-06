@@ -5,9 +5,18 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .permissions import IsAdminOrActivePermission, IsOwnerPermission
+from .permissions import IsAdminOrActivePermission, IsOwnerPermission
 from .serializers import PostSerializer, CategorySerializer, Category, Post
+
+from PIL import Image
+
+DEFAULT_IMAGE_PATH = ''
+IMAGE_MAX_SIZE = 10 * 1024 * 1024
 
 from PIL import Image
 
@@ -18,6 +27,9 @@ IMAGE_MAX_SIZE = 10 * 1024 * 1024
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+from rest_framework.exceptions import NotFound
+from django.core.exceptions import ValidationError
 
 from rest_framework.exceptions import NotFound
 from django.core.exceptions import ValidationError
@@ -55,7 +67,8 @@ class PostViewSet(ModelViewSet):
         try:
             validate_image(image_file)
             image = open_image(image_file)
-
+            # Дальнейшая обработка изображения
+            # ...
             return Response('Image processed successfully.', status=200)
         except ValidationError as e:
             return Response(str(e), status=400)
@@ -64,6 +77,8 @@ class PostViewSet(ModelViewSet):
         except Exception as e:
             # logger.exception('An error occurred')
             return Response('An error occurred while processing the image.', status=500)
+
+
 
 
 def validate_image(image_file):
