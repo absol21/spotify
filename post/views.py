@@ -67,8 +67,7 @@ class PostViewSet(ModelViewSet):
         try:
             validate_image(image_file)
             image = open_image(image_file)
-            # Дальнейшая обработка изображения
-            # ...
+
             return Response('Image processed successfully.', status=200)
         except ValidationError as e:
             return Response(str(e), status=400)
@@ -77,8 +76,6 @@ class PostViewSet(ModelViewSet):
         except Exception as e:
             # logger.exception('An error occurred')
             return Response('An error occurred while processing the image.', status=500)
-
-
 
 
 def validate_image(image_file):
