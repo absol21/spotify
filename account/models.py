@@ -63,3 +63,4 @@ class User(AbstractUser):
     def create_activation_code(self):
         code = get_random_string(10, allowed_chars='123456789#@!$%^&*_')
         self.activation_code=code
+        
