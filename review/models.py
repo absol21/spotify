@@ -41,6 +41,7 @@ class Playlist(models.Model):
     title  = models.CharField(max_length=200,unique=True)
     post = models.ForeignKey(Post,on_delete=models.DO_NOTHING,related_name='playlists')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='playlists')
+    image = models.ImageField(upload_to='post')
 
     def __str__(self) -> str:
         return f'{self.author} add to playlist {self.title}'
