@@ -22,7 +22,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts', verbose_name='категории')
     title = models.CharField(max_length=60, verbose_name='название песни')
     slug = models.SlugField(max_length=120, blank=True, primary_key=True)
-    image = models.ImageField(upload_to='image')
+    image = models.ImageField(upload_to='image', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     text = models.CharField(max_length=10000, blank=True)
     audio_file = models.FileField(upload_to='audio')
