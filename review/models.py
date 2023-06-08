@@ -32,14 +32,18 @@ class Like(models.Model):
         return f'{self.post} liked by {self.author.email}'
  
 
-class Playlist(models.Model):
-    title  = models.CharField(max_length=200,unique=True)
-    post = models.ForeignKey(Post,on_delete=models.DO_NOTHING,related_name='playlists')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='playlists')
-    image = models.ImageField(upload_to='image')
-    description = models.TextField()
+# class Playlist(models.Model):
+#     title  = models.CharField(max_length=200,unique=True)
+#     post = models.ManyToManyField(Post, through='PlayListItem',)
+#     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='playlists')
+#     image = models.ImageField(upload_to='image')
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     description = models.TextField()
 
-    def __str__(self) -> str:
-        return f'{self.author} add to playlist {self.title}'
-    
+#     def __str__(self) -> str:
+#         return f'{self.author} add to playlist {self.title}'
 
+# class PlayListItem(models.Model):
+#     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='playlistitems')
+#     post = models.ForeignKey(Post, on_delete=models.DO_NOTHING, related_name='playlistitems')
+#     quantity = models.PositiveIntegerField(default=1)

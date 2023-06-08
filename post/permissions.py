@@ -10,9 +10,9 @@ class IsAdminOrActivePermission(BasePermission):
         return request.user.is_authenticated and (request.user.is_active or request.user.is_staff)
 
 
-class IsPremiumPermission(BasePermission):
-    def has_permission(self, request, view):
-        return request.user.is_premium_user and (request.user.is_active or request.user.is_staff)
+# class IsPremiumPermission(BasePermission):
+#     def has_permission(self, request, view):
+#         return request.user.is_premium_user and (request.user.is_active or request.user.is_staff)
 
 
 # class IsAuthenticated(BasePermission):

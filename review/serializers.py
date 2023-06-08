@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer,ValidationError,ReadOnlyField
-from .models import Rating,Comment,Playlist,Like
+from .models import Rating, Comment, Like
 
 class RatingSerializer(ModelSerializer):
     class Meta:
@@ -9,7 +9,7 @@ class RatingSerializer(ModelSerializer):
     def validate_rating(self, rating):
         if rating not in range(1, 6):
             raise ValidationError(
-                'Rating must be in range 1 - 6'
+                'Rating must be in range 1 - 5'
             )
         return rating
 
@@ -46,18 +46,30 @@ class LikeSerializer(ModelSerializer):
         return like
     
     
-class PlaylistSerializer(ModelSerializer):
-    author = ReadOnlyField(source='author.email')
-    post = ReadOnlyField()
+# class PlayListItemSerializer(ModelSerializer):
+#     class Meta:
+#         model = PlayListItem
+#         fields = ('posts', 'quantity')
 
-    class Meta:
-        model = Playlist
-        fields = '__all__'
+# class PlayListSerializer(ModelSerializer):
+#     items = PlayListItemSerializer(many=True)
 
-    def create(self, validated_data):
-        user = self.context.get('request').user 
-        playlist = Playlist.objects.create(author=user,**validated_data)
-        return playlist
+#     class Meta:
+#         model = Playlist
+#         fields = ('id', 'playlistitems', 'image')
+
+#     def create(self, validated_data):
+#         items = validated_data.pop('playlistitems')
+#         validated_data['author'] = self.context['request'].user
+#         playlist = super().create(validated_data)
+#         playlistitems = []
+
+#         image = 
 
 
-    
+#         for item in items:
+#             playlistitems.append(PlayListItem(play=playlist, post=item['post'], quantity=item['quantity']))
+        
+#         PlayListItem.objects.bulk_create(playlistitems)
+#         playlist.save()
+#         return playlist
