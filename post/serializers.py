@@ -7,7 +7,7 @@ from django.db.models import Avg
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = 'all'
+        fields = '__all__'
 
 class PostSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False, allow_null=True)

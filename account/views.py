@@ -3,8 +3,10 @@ from rest_framework.response import Response
 from .serializers import RegisterSerializer,ChangePasswordSerializer,ForgotPasswordSerializer,ForgotPasswordCompleteSerializer
 from .models import User
 from .permissions import IsActivePermissions
+from drf_yasg.utils import swagger_auto_schema
 
 class RegisterView(APIView):
+    @swagger_auto_schema(request_body=RegisterSerializer())
     def post(self, request):
         data = request.data
         serializer = RegisterSerializer(data=data)
@@ -24,8 +26,9 @@ class ActivationView(APIView):
 
 
 class ChangePasswordView(APIView):
-    permission_classes = (IsActivePermissions, )
-
+    permission_classes = [IsActivePermissions]
+    
+    @swagger_auto_schema(request_body=ChangePasswordSerializer())
     def post(self, request):
         serializer = ChangePasswordSerializer(data=request.data, context={'request': request})
         if serializer.is_valid(raise_exception = True):
@@ -34,6 +37,7 @@ class ChangePasswordView(APIView):
          
 
 class ForgotPasswordView(APIView):
+    @swagger_auto_schema(request_body=ForgotPasswordSerializer())
     def post(self, request):
         serializer = ForgotPasswordSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -42,6 +46,7 @@ class ForgotPasswordView(APIView):
         
 
 class ForgotPasswordCompleteView(APIView):
+    @swagger_auto_schema(request_body=ForgotPasswordCompleteSerializer())
     def post(self, request):
         serializer = ForgotPasswordCompleteSerializer(data=request.data) 
         if serializer.is_valid(raise_exception=True):
