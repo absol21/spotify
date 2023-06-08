@@ -1,15 +1,15 @@
 from django.contrib import admin
-from .models import Rating,Like,Playlist,Comment
+from .models import Rating,Like,Comment
 
 admin.site.register(Rating)
 admin.site.register(Like)
 # admin.site.register(Playlist)
-admin.site.register(Comment)
+# admin.site.register(Comment)
 
 
 
 class PlayAdmin(admin.ModelAdmin):
-    list_display = ('title', 'get_rating', 'get_likes', 'get_favorites', 'image')
+    list_display = ('get_rating', 'get_likes', 'get_favorites')
     search_fields = ['title', 'body']
     # ordering = ['']
     list_filter = []
@@ -27,4 +27,4 @@ class PlayAdmin(admin.ModelAdmin):
         result = obj.favorites.count()
         return result
 
-admin.site.register(Playlist, PlayAdmin)
+admin.site.register(Comment ,PlayAdmin)
