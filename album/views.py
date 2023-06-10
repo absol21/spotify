@@ -5,23 +5,24 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import AllowAny
 from .permissions import IsAdminOrActivePermission, IsOwnerPermission
-from .serializers import PostSerializer, CategorySerializer
-from .models import Post, Category
-from review.serializers import LikeSerializer#,PlaylistSerializer
-from review.models import Like#,Playlist
+from .serializers import AudioFileSerializer, CategorySerializer, AlbumSerializer, AudioFile, Category, Album
+from review.serializers import LikeSerializer
+from review.models import Like
+from review.views import PermissionMixin
+
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
-class PostViewSet(ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
+
+class AudioFileViewSet(ModelViewSet):
+    queryset = AudioFile.objects.all()
+    serializer_class = AudioFileSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['category']
     search_fields = ['title', 'created_at']
     ordering_fields = ['title']
-
 
     @action(methods=['POST'],detail=True)
     def like(self,request,pk=None):
@@ -37,21 +38,6 @@ class PostViewSet(ModelViewSet):
                 Like.objects.create(post=post,author=author)
                 message = 'liked'
             return Response(message,status=200)
-        
-    # @action(methods=['POST'],detail=True)
-    # def playlist(self,request,pk=None):
-    #     post = self.get_object()
-    #     author = request.user
-    #     serializer = PlaylistSerializer(data=request.data)
-    #     if serializer.is_valid(raise_exception=True):
-    #         try:
-    #             playlist = Playlist.objects.get(post=post,author=author)
-    #             playlist.delete()
-    #             message = f'deleted from {self.playlist.title}'
-    #         except Playlist.DoesNotExist:
-    #             Playlist.objects.create(post=post,author=author)
-    #             message = f'added to {self.playlist.title}'
-    #         return Response(message,status=200)
 
     def get_permissions(self):
         if self.action in ['update', 'destroy', 'partial_update']:
@@ -61,3 +47,8 @@ class PostViewSet(ModelViewSet):
         elif self.action in ['list', 'retrieve']:
             self.permission_classes = [AllowAny]
         return super().get_permissions()
+    
+
+class AlbumViewSet(PermissionMixin, ModelViewSet):
+    queryset = Album.objects.all()
+    serializer_class = AlbumSerializer

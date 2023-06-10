@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from post.models import Post
+from album.models import AudioFile
 
 User = get_user_model()
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments', verbose_name='Пост')
+    audio_file = models.ForeignKey(AudioFile, on_delete=models.CASCADE, related_name='comments', verbose_name='audio_file')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments', verbose_name='Автор')
     body = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -16,7 +16,7 @@ class Comment(models.Model):
 
 
 class Rating(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='ratings', verbose_name='Пост')
+    audio_file = models.ForeignKey(AudioFile, on_delete=models.CASCADE, related_name='ratings', verbose_name='audio_file')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings', verbose_name='Автор')
     rating = models.PositiveSmallIntegerField()
 
@@ -25,25 +25,9 @@ class Rating(models.Model):
 
 
 class Like(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    audio_file = models.ForeignKey(AudioFile, on_delete=models.CASCADE, related_name='likes')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
 
     def __str__(self):
-        return f'{self.post} liked by {self.author.email}'
+        return f'{self.audio_file} liked by {self.author.email}'
  
-
-# class Playlist(models.Model):
-#     title  = models.CharField(max_length=200,unique=True)
-#     post = models.ManyToManyField(Post, through='PlayListItem',)
-#     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='playlists')
-#     image = models.ImageField(upload_to='image')
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     description = models.TextField()
-
-#     def __str__(self) -> str:
-#         return f'{self.author} add to playlist {self.title}'
-
-# class PlayListItem(models.Model):
-#     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE, related_name='playlistitems')
-#     post = models.ForeignKey(Post, on_delete=models.DO_NOTHING, related_name='playlistitems')
-#     quantity = models.PositiveIntegerField(default=1)
