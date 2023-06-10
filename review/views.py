@@ -1,5 +1,5 @@
 from .serializers import CommentSerializer, RatingSerializer
-from .models import Comment, Rating#,Playlist
+from .models import Comment, Rating
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from .permissions import IsAuthorOrReadOnly
@@ -24,7 +24,3 @@ class CommentViewSet(PermissionMixin,ModelViewSet):
 class RatingViewSet(PermissionMixin,ModelViewSet):
     queryset = Rating.objects.all()
     serializer_class = RatingSerializer
-
-# class PlaylistViewSet(PermissionMixin,ModelViewSet):
-    # queryset = Playlist.objects.all()
-    # serializer_class = RatingSerializer

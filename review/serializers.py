@@ -43,33 +43,4 @@ class LikeSerializer(ModelSerializer):
     def create(self, validated_data):
         user = self.context.get('request').user 
         like = Like.objects.create(author=user,**validated_data)
-        return like
-    
-    
-# class PlayListItemSerializer(ModelSerializer):
-#     class Meta:
-#         model = PlayListItem
-#         fields = ('posts', 'quantity')
-
-# class PlayListSerializer(ModelSerializer):
-#     items = PlayListItemSerializer(many=True)
-
-#     class Meta:
-#         model = Playlist
-#         fields = ('id', 'playlistitems', 'image')
-
-#     def create(self, validated_data):
-#         items = validated_data.pop('playlistitems')
-#         validated_data['author'] = self.context['request'].user
-#         playlist = super().create(validated_data)
-#         playlistitems = []
-
-#         image = 
-
-
-#         for item in items:
-#             playlistitems.append(PlayListItem(play=playlist, post=item['post'], quantity=item['quantity']))
-        
-#         PlayListItem.objects.bulk_create(playlistitems)
-#         playlist.save()
-#         return playlist
+        return like 
