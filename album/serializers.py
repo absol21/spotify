@@ -36,21 +36,25 @@ class AudioFileSerializer(serializers.ModelSerializer):
 
 
 class AlbumItemSerializer(serializers.ModelSerializer):
-    audio_file = AudioFileSerializer()
-
     class Meta:
         model = AlbumItem
-        fields = ['id', 'track', 'position']
+        fields = '__all__'
+
 
 class AlbumSerializer(serializers.ModelSerializer):
-    album_items = AlbumItemSerializer(many=True, read_only=True)
-    author = serializers.ReadOnlyField(source='author.email')
-    
+    # items = AlbumItemSerializer(many=True)
+
     class Meta:
         model = Album
-        fields = ['id', 'title', 'author', 'image', 'created_at', 'description', 'album_items']
+        fields = '__all__'
 
     def create(self, validated_data):
-        user = self.context.get('request').user
+        request = self.context.get('request')
+        user = request.user
         album = Album.objects.create(author=user, **validated_data)
         return album
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['album_items'] = AlbumItemSerializer(instance.album_items.all(), many=True).data
+        return representation

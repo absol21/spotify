@@ -8,7 +8,9 @@ from .permissions import IsAdminOrActivePermission, IsOwnerPermission
 from .serializers import AudioFileSerializer, CategorySerializer, AlbumSerializer, AudioFile, Category, Album
 from review.serializers import LikeSerializer
 from review.models import Like
-from review.views import PermissionMixin
+# from review.views import PermissionMixin
+from .permissions import IsAuthenticated
+
 
 
 class CategoryViewSet(ModelViewSet):
@@ -49,6 +51,11 @@ class AudioFileViewSet(ModelViewSet):
         return super().get_permissions()
     
 
-class AlbumViewSet(PermissionMixin, ModelViewSet):
+class AlbumViewSet(ModelViewSet):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_context(self):
+        return {'request': self.request, 'user': self.request.user}
+    

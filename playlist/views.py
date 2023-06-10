@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from review.views import PermissionMixin
 from .serializers import PlaylistSerializer, Playlist
