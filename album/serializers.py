@@ -9,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class AudioFileSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False, allow_null=True)
-    duration = serializers.DurationField(read_only=True)
+
     class Meta:
         model = AudioFile
         exclude = ('author',)
@@ -44,15 +44,15 @@ class AlbumSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         user = request.user
         audio_files = validated_data.pop('audio_files', [])
-        if not audio_files:
-            raise serializers.ValidationError(
-                "Аудиофайл обязателен для создания альбома."
-                )
+        # if not audio_files:
+        #     raise serializers.ValidationError(
+        #         "Аудиофайл обязателен для создания альбома."
+        #         )
         image = validated_data.get('image')
         if not image:
             image = audio_files[0].image
         album = Album.objects.create(author=user, **validated_data)
         album.image = image
         album.save()
-        album.audio_files.set(audio_files)
+        # album.audio_files.set(audio_files)
         return album
