@@ -5,7 +5,8 @@ from album.models import AudioFile
 User = get_user_model()
 
 class Playlist(models.Model):
-    title = models.CharField(max_length=200, unique=True)
+    title = models.CharField(max_length=70, unique=True)
+    artist = models.CharField(max_length=70)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='playlists')
     image = models.ImageField(upload_to='image')
     created_at = models.DateTimeField(auto_now_add=True)
