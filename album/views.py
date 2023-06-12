@@ -54,8 +54,4 @@ class AudioFileViewSet(ModelViewSet):
 class AlbumViewSet(ModelViewSet):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get_serializer_context(self):
-        return {'request': self.request, 'user': self.request.user}
-    
+    # permission_classes = [IsAuthenticated]

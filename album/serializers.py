@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import AudioFile, Category, Album, AlbumItem
+from .models import AudioFile, Category, Album
 from django.db.models import Avg
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -9,7 +9,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class AudioFileSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False, allow_null=True)
-    
+    duration = serializers.DurationField(read_only=True)
     class Meta:
         model = AudioFile
         exclude = ('author',)
@@ -33,28 +33,26 @@ class AudioFileSerializer(serializers.ModelSerializer):
         representation['comments'] = [i.body for i in instance.comments.all()]
         representation['rating_avg'] = instance.ratings.aggregate(Avg('rating'))['rating__avg']
         return representation
-
-
-class AlbumItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AlbumItem
-        fields = '__all__'
-
+    
 
 class AlbumSerializer(serializers.ModelSerializer):
-    # items = AlbumItemSerializer(many=True)
-
     class Meta:
         model = Album
-        fields = '__all__'
+        fields = ('title', 'image', 'created_at', 'description', 'audio_files')
 
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
+        audio_files = validated_data.pop('audio_files', [])
+        if not audio_files:
+            raise serializers.ValidationError(
+                "Аудиофайл обязателен для создания альбома."
+                )
+        image = validated_data.get('image')
+        if not image:
+            image = audio_files[0].image
         album = Album.objects.create(author=user, **validated_data)
+        album.image = image
+        album.save()
+        album.audio_files.set(audio_files)
         return album
-    
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        representation['album_items'] = AlbumItemSerializer(instance.album_items.all(), many=True).data
-        return representation

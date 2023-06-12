@@ -1,17 +1,24 @@
 from rest_framework import serializers
-from album.serializers import AudioFileSerializer 
-from .models import Playlist, PlayListItem
-
-class PlayListItemSerializer(serializers.ModelSerializer):
-    audio_file = AudioFileSerializer()
-
-    class Meta:
-        model = PlayListItem
-        fields = ['id', 'track', 'position']
+from .models import Playlist
 
 class PlaylistSerializer(serializers.ModelSerializer):
-    playlist_items = PlayListItemSerializer(many=True, read_only=True)
-
     class Meta:
         model = Playlist
-        fields = ['id', 'title', 'author', 'image', 'created_at', 'description', 'playlist_items']
+        fields = ('title', 'image', 'created_at', 'description', 'audio_files')
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        audio_files = validated_data.pop('audio_files', [])
+        if not audio_files:
+            raise serializers.ValidationError(
+                "Аудиофайл обязателен для создания альбома."
+                )
+        image = validated_data.get('image')
+        if not image:
+            image = audio_files[0].image
+        playlist = Playlist.objects.create(author=user, **validated_data)
+        playlist.image = image
+        playlist.save()
+        playlist.audio_files.set(audio_files)
+        return playlist
