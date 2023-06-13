@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 # from .models import User
-from .utils import send_activation_code
+# from .utils import send_activation_code
 from django.core.mail import send_mail
-
+from .tasks import send_activation_code_celery
 User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -23,7 +23,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
-        send_activation_code(user.email, user.activation_code)
+        send_activation_code_celery(user.email, user.activation_code)
         return user
 
 class ChangePasswordSerializer(serializers.Serializer):
