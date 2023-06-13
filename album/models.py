@@ -42,9 +42,8 @@ class Album(models.Model):
     title = models.CharField(max_length=70, unique=True)
     artist = models.CharField(max_length=70)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='albums')
-    image = models.ImageField(upload_to='image', null=True, blank=True)
+    image = models.ImageField(upload_to='image')
     created_at = models.DateTimeField(auto_now_add=True)
-    description = models.TextField(blank=True, null=True)
     audio_files = models.ManyToManyField(AudioFile, blank=True)
 
     def __str__(self):
