@@ -1,5 +1,5 @@
-from .serializers import CommentSerializer, RatingSerializer
-from .models import Comment, Rating
+from .serializers import RatingSerializer
+from .models import Rating
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny,IsAuthenticated
 from .permissions import IsAuthorOrReadOnly
@@ -14,11 +14,6 @@ class PermissionMixin:
         else:
             permissions = [AllowAny]
         return [permission() for permission in permissions]
-
-
-class CommentViewSet(PermissionMixin,ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
 
     
 class RatingViewSet(PermissionMixin,ModelViewSet):

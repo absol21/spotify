@@ -26,7 +26,6 @@ class AudioFile(models.Model):
     slug = models.SlugField(max_length=30, unique=True, primary_key=True, blank=True)
     image = models.ImageField(upload_to='image', default='image/default_music_image.jpg')
     created_at = models.DateTimeField(auto_now_add=True)
-    text = models.CharField(max_length=10000, blank=True)
     audio_file = models.FileField(upload_to='audio')
 
 
