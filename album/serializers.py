@@ -30,7 +30,6 @@ class AudioFileSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         representation['likes_count'] = instance.likes.count()
-        representation['comments'] = [i.body for i in instance.comments.all()]
         representation['rating_avg'] = instance.ratings.aggregate(Avg('rating'))['rating__avg']
         return representation
     

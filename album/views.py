@@ -8,7 +8,6 @@ from .permissions import IsAdminOrActivePermission, IsOwnerPermission
 from .serializers import AudioFileSerializer, CategorySerializer, AlbumSerializer, AudioFile, Category, Album
 from review.serializers import LikeSerializer
 from review.models import Like
-# from review.views import PermissionMixin
 from .permissions import IsAuthenticated
 
 
