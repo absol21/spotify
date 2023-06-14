@@ -27,12 +27,13 @@ class AudioFileSerializer(serializers.ModelSerializer):
         return image
 
 
-    def create(self, validated_data):
-        request = self.context.get('request')
-        user = request.user
-        audio_file = AudioFile.objects.create(author=user, **validated_data)
-        audio_file.set(audio_file)
-        return audio_file
+def create(self, validated_data):
+    request = self.context.get('request')
+    user = request.user
+    audio_files_data = validated_data.pop('audio_files')
+    audio_file = AudioFile.objects.create(author=user, **validated_data)
+    audio_file.audio_files.set(audio_files_data)
+    return audio_file
 
     
 
