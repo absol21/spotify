@@ -26,7 +26,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['34.125.249.106', 'localhost']
+ALLOWED_HOSTS = ['34.125.249.106', 'localhost', '127.0.0.1']
 
 AUTH_USER_MODEL = 'account.USER'
 

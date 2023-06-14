@@ -32,7 +32,7 @@ class AudioFileSerializer(serializers.ModelSerializer):
 class AlbumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Album
-        fields = ('title', 'image', 'created_at', 'description', 'audio_files')
+        fields = ('title', 'image', 'created_at', 'audio_files')
 
     def create(self, validated_data):
         request = self.context.get('request')
