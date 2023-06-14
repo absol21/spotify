@@ -21,28 +21,26 @@ class AudioFileViewSet(ModelViewSet):
     queryset = AudioFile.objects.all()
     serializer_class = AudioFileSerializer
 
-    
 
 class AlbumViewSet(ModelViewSet):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['category']
     search_fields = ['title', 'created_at']
     ordering_fields = ['title']
 
     @action(methods=['POST'],detail=True)
     def like(self,request,pk=None):
-        post = self.get_object()
+        album = self.get_object()
         author = request.user
         serializer = LikeSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             try:
-                like = Like.objects.get(post=post,author=author)
+                like = Like.objects.get(album=album,author=author)
                 like.delete()
                 message = 'disliked'
             except Like.DoesNotExist:
-                Like.objects.create(post=post,author=author)
+                Like.objects.create(album=album,author=author)
                 message = 'liked'
             return Response(message,status=200)
 

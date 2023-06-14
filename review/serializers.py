@@ -21,7 +21,7 @@ class RatingSerializer(ModelSerializer):
 
 class LikeSerializer(ModelSerializer):
     author = ReadOnlyField(source='author.email')
-    product = ReadOnlyField()
+    album = ReadOnlyField()
 
     class Meta:
         model = Like

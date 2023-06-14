@@ -44,10 +44,12 @@ class AlbumSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
-        audio_files_data = validated_data.pop('audio_files')
+        audio_files_data = validated_data.pop('audio_files', [])
         album = Album.objects.create(author=user, **validated_data)
         album.audio_files.set(audio_files_data)
+        album.save()
         return album
+
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)

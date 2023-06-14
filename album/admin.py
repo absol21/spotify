@@ -14,8 +14,17 @@ admin.site.register(AudioFile, AudioFileAdmin)
 
 
 class AlbumAdmin(admin.ModelAdmin):
-    list_display = ('title', 'image', 'created_at')
+    list_display = ('title', 'image', 'created_at', 'get_rating', 'get_likes')
     search_fields = ['title']
     ordering = ['created_at']
+
+    def get_rating(self, obj):
+        from django.db.models import Avg
+        result = obj.ratings.aggregate(Avg('rating'))
+        return result['rating__avg']
+
+    def get_likes(self, obj):
+        result = obj.likes.count()
+        return result
 
 admin.site.register(Album, AlbumAdmin)
