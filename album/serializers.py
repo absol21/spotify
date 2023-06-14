@@ -8,23 +8,30 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AudioFileSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(required=False, allow_null=True)
+    image = serializers.ImageField(required=True, allow_null=False)
 
     class Meta:
         model = AudioFile
         exclude = ('author',)
 
-    def validate_title(self, title):
-        if AudioFile.objects.filter(title=title).exists():
+    def validate_title(self, title, artist):
+        if AudioFile.objects.filter(title=title, artist=artist).exists():
             raise serializers.ValidationError(
                 'Пост с таким заголовком уже существует'
             )
         return title
-    
+
+    def validate(self, image):
+        if image.size > 4 * 1024 * 1024:
+            raise serializers.ValidationError('image is too large')
+        return image
+
+
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
         audio_file = AudioFile.objects.create(author=user, **validated_data)
+        audio_file.set(audio_file)
         return audio_file
 
     
