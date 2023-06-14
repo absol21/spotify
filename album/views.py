@@ -27,7 +27,7 @@ class AlbumViewSet(ModelViewSet):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['category']
+    filterset_fields = ['category']
     search_fields = ['title', 'created_at']
     ordering_fields = ['title']
 
