@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from album.models import AudioFile
+from album.models import Album
 
 User = get_user_model()
 
 
 class Rating(models.Model):
-    audio_file = models.ForeignKey(AudioFile, on_delete=models.CASCADE, related_name='ratings', verbose_name='audio_file')
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='ratings', verbose_name='album')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='ratings', verbose_name='Автор')
     rating = models.PositiveSmallIntegerField()
 
@@ -15,9 +15,9 @@ class Rating(models.Model):
 
 
 class Like(models.Model):
-    audio_file = models.ForeignKey(AudioFile, on_delete=models.CASCADE, related_name='likes')
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='likes')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
 
     def __str__(self):
-        return f'{self.audio_file} liked by {self.author.email}'
+        return f'{self.album} liked by {self.author.email}'
  
