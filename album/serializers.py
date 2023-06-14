@@ -21,7 +21,7 @@ class AudioFileSerializer(serializers.ModelSerializer):
             )
         return title
 
-    def validate(self, image):
+    def validate_image(self, image):
         if image.size > 4 * 1024 * 1024:
             raise serializers.ValidationError('image is too large')
         return image
