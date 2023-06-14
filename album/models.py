@@ -40,7 +40,7 @@ class AudioFile(models.Model):
 
 class Album(models.Model):
     title = models.CharField(max_length=70, unique=True)
-    artist = models.CharField(max_length=70)
+    artist = models.CharField(max_length=70, blank=False)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='albums')
     image = models.ImageField(upload_to='image')
     created_at = models.DateTimeField(auto_now_add=True)
