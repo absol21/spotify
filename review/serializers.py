@@ -29,5 +29,5 @@ class LikeSerializer(ModelSerializer):
 
     def create(self, validated_data):
         user = self.context.get('request').user 
-        like = Like.objects.create(author=user,**validated_data)
+        like = Like.objects.create(author=user, **validated_data)
         return like 
