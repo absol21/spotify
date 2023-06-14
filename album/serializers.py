@@ -19,12 +19,16 @@ class AudioFileSerializer(serializers.ModelSerializer):
     def validate_title(self, title):
         artist = self.initial_data.get('artist')
         if AudioFile.objects.filter(title=title, artist=artist).exists():
-            raise serializers.ValidationError('Пост с таким заголовком уже существует')
+            raise serializers.ValidationError(
+                'Пост с таким заголовком уже существует'
+                )
         return title
 
     def validate_image(self, image):
         if image.size > 4 * 1024 * 1024:
-            raise serializers.ValidationError('Изображение слишком большое')
+            raise serializers.ValidationError(
+                'Изображение слишком большое'
+                )
         return image
 
     def create(self, validated_data):
@@ -35,19 +39,19 @@ class AudioFileSerializer(serializers.ModelSerializer):
 
 
 class AlbumSerializer(serializers.ModelSerializer):
-    audio_files = AudioFileSerializer(many=True)
+    # audio_files = AudioFileSerializer(many=True)
 
     class Meta:
         model = Album
-        fields = ('title', 'image', 'created_at', 'audio_files')
+        fields = ('title', 'image', 'created_at', 'audio_files', 'artist')
+        # exclude = ('author',)
 
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
-        audio_files_data = validated_data.pop('audio_files', [])
+        audio_files_data = validated_data.pop('audio_files')
         album = Album.objects.create(author=user, **validated_data)
         album.audio_files.set(audio_files_data)
-        album.save()
         return album
 
 
