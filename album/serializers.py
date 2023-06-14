@@ -2,10 +2,12 @@ from rest_framework import serializers
 from .models import AudioFile, Category, Album
 from django.db.models import Avg
 
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
 
 class AudioFileSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=True, allow_null=False)
@@ -14,28 +16,27 @@ class AudioFileSerializer(serializers.ModelSerializer):
         model = AudioFile
         exclude = ('author',)
 
-    def validate_title(self, title, artist):
+    def validate_title(self, title):
+        artist = self.initial_data.get('artist')
         if AudioFile.objects.filter(title=title, artist=artist).exists():
-            raise serializers.ValidationError(
-                'Пост с таким заголовком уже существует'
-            )
+            raise serializers.ValidationError('Пост с таким заголовком уже существует')
         return title
 
     def validate_image(self, image):
         if image.size > 4 * 1024 * 1024:
-            raise serializers.ValidationError('image is too large')
+            raise serializers.ValidationError('Изображение слишком большое')
         return image
 
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        audio_file = AudioFile.objects.create(author=user, **validated_data)
+        return audio_file
 
-def create(self, validated_data):
-    request = self.context.get('request')
-    user = request.user
-    audio_file = AudioFile.objects.create(author=user, **validated_data)
-    return audio_file
-
-    
 
 class AlbumSerializer(serializers.ModelSerializer):
+    audio_files = AudioFileSerializer(many=True)
+
     class Meta:
         model = Album
         fields = ('title', 'image', 'created_at', 'audio_files')
