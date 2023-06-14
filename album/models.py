@@ -44,7 +44,7 @@ class Album(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='albums')
     image = models.ImageField(upload_to='image')
     created_at = models.DateTimeField(auto_now_add=True)
-    audio_files = models.ManyToManyField(AudioFile, blank=True)
+    audio_files = models.ForeignKey(AudioFile, on_delete=models.CASCADE, related_name='albums', blank=True)
 
     def __str__(self):
         return f'{self.author} добавил в альбомы: {self.title}'
