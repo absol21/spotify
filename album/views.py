@@ -25,24 +25,24 @@ class AudioFileViewSet(ModelViewSet):
 class AlbumViewSet(ModelViewSet):
     queryset = Album.objects.all()
     serializer_class = AlbumSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # search_fields = ['title', 'created_at']
-    # ordering_fields = ['title']
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['title', 'created_at']
+    ordering_fields = ['title']
 
-    # @action(methods=['POST'],detail=True)
-    # def like(self,request,pk=None):
-    #     album = self.get_object()
-    #     author = request.user
-    #     serializer = LikeSerializer(data=request.data)
-    #     if serializer.is_valid(raise_exception=True):
-    #         try:
-    #             like = Like.objects.get(album=album,author=author)
-    #             like.delete()
-    #             message = 'disliked'
-    #         except Like.DoesNotExist:
-    #             Like.objects.create(album=album,author=author)
-    #             message = 'liked'
-    #         return Response(message,status=200)
+    @action(methods=['POST'],detail=True)
+    def like(self,request,pk=None):
+        album = self.get_object()
+        author = request.user
+        serializer = LikeSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            try:
+                like = Like.objects.get(album=album,author=author)
+                like.delete()
+                message = 'disliked'
+            except Like.DoesNotExist:
+                Like.objects.create(album=album,author=author)
+                message = 'liked'
+            return Response(message,status=200)
 
     def get_permissions(self):
         if self.action in ['update', 'destroy', 'partial_update']:

@@ -36,8 +36,8 @@ class AlbumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Album
-        fields = ('title', 'image', 'created_at', 'audio_files', 'artist')
-        # exclude = ('author',)
+        # fields = ('title', 'image', 'created_at', 'audio_files', 'artist')
+        exclude = ('author',)
 
     def create(self, validated_data):
         request = self.context.get('request')
