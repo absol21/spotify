@@ -24,6 +24,7 @@ class UserManager(BaseUserManager):
         user.is_active = True
         user.is_staff = True
         user.is_superuser = True
+        user.is_premium = True
         user.save()
         return user
 
@@ -32,6 +33,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_premium = models.BooleanField(default=False)
     activation_code = models.CharField(max_length=10, blank=True)
 
     objects = UserManager()
@@ -52,3 +54,5 @@ class User(AbstractBaseUser):
         code = get_random_string(length=10, allowed_chars='0123456789')
         self.activation_code = code
         self.save()
+
+        
