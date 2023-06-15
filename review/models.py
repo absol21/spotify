@@ -20,4 +20,3 @@ class Like(models.Model):
 
     def __str__(self):
         return f'{self.album} liked by {self.author.email}'
- 
