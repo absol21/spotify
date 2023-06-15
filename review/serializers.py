@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer,ValidationError,ReadOnlyF
 from .models import Rating, Like
 
 class RatingSerializer(ModelSerializer):
+    author = ReadOnlyField(source='author.email')
     class Meta:
         model = Rating
         fields = '__all__'
@@ -17,7 +18,7 @@ class RatingSerializer(ModelSerializer):
         user = self.context.get('request').user
         rating = Rating.objects.create(author=user,**validated_data)
         return rating
-    
+
 
 class LikeSerializer(ModelSerializer):
     author = ReadOnlyField(source='author.email')

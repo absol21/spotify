@@ -175,3 +175,4 @@ cython_debug/
 image/
 audio/
 # __pycache__/
+migrations/

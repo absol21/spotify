@@ -4,7 +4,7 @@ from .views import PlaylistViewSet
 
 router = DefaultRouter()
 
-router.register('albums', PlaylistViewSet)
+router.register('playlists', PlaylistViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
