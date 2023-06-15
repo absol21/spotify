@@ -48,3 +48,30 @@ class Album(models.Model):
 
     def __str__(self):
         return f'{self.author} добавил в альбомы: {self.title}'
+
+# class Album(models.Model):
+#     title = models.CharField(max_length=70, unique=True)
+#     artist = models.CharField(max_length=70)
+#     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='albums')
+#     image = models.ImageField(upload_to='image')
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     audio_files = models.ManyToManyField(AudioFile, blank=True)
+
+#     def __str__(self):
+#         return f'{self.author} добавил в альбомы: {self.title}'
+
+# class Album(models.Model):
+#     title = models.CharField(max_length=50)
+#     author = models.ForeignKey(User, related_name='orders', on_delete=models.CASCADE)
+#     audioFile = models.ManyToManyField(AudioFile, through='AlbumItem')
+#     total_sum = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+#     created_at = models.DateTimeField(auto_now_add=True)
+    
+#     def __str__(self):
+#         return f'Product ID: {self.pk}'
+
+
+# class AlbumItem(models.Model):
+#     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='items')
+#     audiofile = models.ForeignKey(AudioFile, on_delete=models.CASCADE, related_name='items')
+#     quantity = models.PositiveIntegerField(default=1)

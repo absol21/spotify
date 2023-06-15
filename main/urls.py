@@ -38,5 +38,6 @@ urlpatterns = [
     path('api/v1/', include('album.urls')),
     path('api/v1/', include('review.urls')),
     path('api/v1/', include('account.urls')),
+    path('api/v1/', include('playlist.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += staticfiles_urlpatterns()
