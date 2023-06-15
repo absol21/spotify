@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.viewsets import ModelViewSet 
+from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import AllowAny
@@ -9,7 +9,6 @@ from .serializers import AudioFileSerializer, CategorySerializer, AlbumSerialize
 from review.serializers import LikeSerializer
 from review.models import Like
 from .permissions import IsAuthenticated
-
 
 
 class CategoryViewSet(ModelViewSet):
